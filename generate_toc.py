@@ -49,7 +49,7 @@ for post in files:
     title = cleanup(parser.get_title())
     subtitle = cleanup(parser.get_subtitle())
     blog_content += f'''
-        <a href="https://thebojda.github.com/posts/{post}" class="text-decoration-none" style="color:black;" target="_black">
+        <a href="https://thebojda.github.io/posts/{post}" class="text-decoration-none" style="color:black;" target="_black">
             <div class="mb-4">
                 <h3>{title}</h3>
                 <p>{subtitle}</p>
