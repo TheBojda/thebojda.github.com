@@ -1,0 +1,58 @@
+{
+    "preferredUsername": "TheBojda",
+    "thumbnailUrl": "https://thebojda.github.io/profile.jpg",
+    "photos": [
+        {
+            "value": "https://thebojda.github.io/profile.jpg",
+            "type": "thumbnail"
+        }
+    ],
+    "name": {
+        "givenName": "Laszlo",
+        "familyName": "Fazekas",
+        "formatted": "Laszlo Fazekas"
+    },
+    "displayName": "Laszlo Fazekas",
+    "aboutMe": "Software Developer, Tech Writer, blockchain, BCI and open-source enthusiast",
+    "emails": [
+        {
+            "primary": true,
+            "value": "thebojda@gmail.com"
+        }
+    ],
+    "ims": [
+        {
+            "type": "skype",
+            "value": "lfaz80"
+        },
+        {
+            "type": "telegram",
+            "value": "thebojda"
+        }
+    ],
+    "accounts": [
+        {
+            "domain": "twitter.com",
+            "username": "TheBojda"
+        },
+        {
+            "domain": "github.com",
+            "username": "TheBojda"
+        }
+    ],
+    "urls": [
+        {
+            "value": "https://thebojda.github.io/",
+            "primary": true
+        },
+        {
+            "value": "https://thebojda.medium.com"
+        },
+        {
+            "value": "https://hackernoon.com/u/thebojda"
+        },
+        {
+            "value": "https://www.linkedin.com/in/l%C3%A1szl%C3%B3-fazekas-2429a912/"
+        }
+    ]
+}
