@@ -14,22 +14,6 @@
     },
     "displayName": "Laszlo Fazekas",
     "aboutMe": "Software Developer, Tech Writer, blockchain, BCI and open-source enthusiast",
-    "emails": [
-        {
-            "primary": true,
-            "value": "thebojda@gmail.com"
-        }
-    ],
-    "ims": [
-        {
-            "type": "skype",
-            "value": "lfaz80"
-        },
-        {
-            "type": "telegram",
-            "value": "thebojda"
-        }
-    ],
     "accounts": [
         {
             "domain": "twitter.com",
