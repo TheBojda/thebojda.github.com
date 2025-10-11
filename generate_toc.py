@@ -1,5 +1,6 @@
 import os
 from html.parser import HTMLParser
+import requests
 
 class TitleExtractor(HTMLParser):
     inHeading = False
@@ -33,29 +34,77 @@ class TitleExtractor(HTMLParser):
     def get_subtitle(self):
         return self.subtitle
 
+class ImageDownloader(HTMLParser):
+    def __init__(self, assets_folder='assets'):
+        super().__init__()
+        self.assets_folder = assets_folder
+        self.image_urls = []
+        self.modified_html = ''
+        os.makedirs(self.assets_folder, exist_ok=True)
+
+    def handle_starttag(self, tag, attrs):
+        attrs_dict = dict(attrs)
+        if tag == 'img':
+            if 'src' in attrs_dict:
+                image_url = attrs_dict['src']
+                self.image_urls.append(image_url)
+                image_name = os.path.basename(image_url)
+                local_path = os.path.join(self.assets_folder, image_name)
+                self.download_image(image_url, local_path)
+                attrs_dict['src'] = '/assets/' + image_name
+        self.modified_html += f"<{tag} " + " ".join(f'{key}="{value}"' for key, value in attrs_dict.items()) + ">"
+
+    def handle_endtag(self, tag):
+        self.modified_html += f"</{tag}>"
+
+    def handle_data(self, data):
+        self.modified_html += data
+
+    def download_image(self, url, path):
+        if os.path.exists(path):
+            print(f"Image already exists: {path}, skipping download.")
+            return
+        try:
+            response = requests.get(url, stream=True)
+            if response.status_code == 200:
+                with open(path, 'wb') as file:
+                    for chunk in response.iter_content(1024):
+                        file.write(chunk)
+        except Exception as e:
+            print(f"Failed to download {url}: {e}")
+
+    def get_modified_html(self):
+        return self.modified_html
+
 def cleanup(text):
     return text.split('|')[0] if '|' in text else text
 
 # Collect blog links content
 blog_content = ''
-files = os.listdir('docs/posts')
+files = os.listdir('docs/posts_src')
 files.sort(reverse=True)
 
 for post in files:
-    with open(f'docs/posts/{post}', 'r') as file:
+    print(f"Processing file: {post}")
+    with open(f'docs/posts_src/{post}', 'r') as file:
         html = file.read()
-    parser = TitleExtractor()
-    parser.feed(html)
-    title = cleanup(parser.get_title())
-    subtitle = cleanup(parser.get_subtitle())
-    blog_content += f'''
-        <a href="https://thebojda.github.io/posts/{post}" class="text-decoration-none" style="color:black;" target="_black">
-            <div class="mb-4">
-                <h3>{title}</h3>
-                <p>{subtitle}</p>
-            </div>
-        </a>
-    '''
+        parser = TitleExtractor()
+        parser.feed(html)
+        image_downloader = ImageDownloader(assets_folder='docs/assets')
+        image_downloader.feed(html)
+        html = image_downloader.get_modified_html()
+        title = cleanup(parser.get_title())
+        subtitle = cleanup(parser.get_subtitle())
+        blog_content += f'''
+            <a href="https://thebojda.github.io/posts/{post}" class="text-decoration-none" style="color:black;" target="_black">
+                <div class="mb-4">
+                    <h3>{title}</h3>
+                    <p>{subtitle}</p>
+                </div>
+            </a>
+        '''
+        with open(f'docs/posts/{post}', 'w') as local_file:
+            local_file.write(html)
 
 # Load template, substitute {blog}, and write to index.html
 with open('template.html', 'r') as template_file:
