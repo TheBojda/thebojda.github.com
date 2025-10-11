@@ -1,6 +1,7 @@
 import os
 from html.parser import HTMLParser
 import requests
+import time
 
 class TitleExtractor(HTMLParser):
     inHeading = False
@@ -47,14 +48,17 @@ class ImageDownloader(HTMLParser):
         if tag == 'img':
             if 'src' in attrs_dict:
                 image_url = attrs_dict['src']
+                print(f"Found image: {image_url}")
                 self.image_urls.append(image_url)
                 image_name = os.path.basename(image_url)
                 local_path = os.path.join(self.assets_folder, image_name)
-                self.download_image(image_url, local_path)
-                attrs_dict['src'] = '/assets/' + image_name
+                if self.download_image(image_url, local_path):
+                    attrs_dict['src'] = '/assets/' + image_name
         self.modified_html += f"<{tag} " + " ".join(f'{key}="{value}"' for key, value in attrs_dict.items()) + ">"
 
     def handle_endtag(self, tag):
+        if tag == 'head':
+            self.modified_html += '<link rel="stylesheet" href="/medium-export.css">'
         self.modified_html += f"</{tag}>"
 
     def handle_data(self, data):
@@ -63,15 +67,29 @@ class ImageDownloader(HTMLParser):
     def download_image(self, url, path):
         if os.path.exists(path):
             print(f"Image already exists: {path}, skipping download.")
-            return
+            return True
         try:
-            response = requests.get(url, stream=True)
-            if response.status_code == 200:
+            response = requests.get(url, stream=True, timeout=10, allow_redirects=False)
+            if response.status_code == 301:
+                redirect_url = response.headers.get('Location')
+                if redirect_url:
+                    print(f"Redirecting from {url} to {redirect_url}")
+                    return self.download_image(redirect_url, path)
+                else:
+                    print(f"301 response received but no Location header found for {url}")
+                    return False
+            elif response.status_code == 200:
                 with open(path, 'wb') as file:
                     for chunk in response.iter_content(1024):
                         file.write(chunk)
+                print(f"Downloaded successfully: {path}")
+                return True
+            else:
+                print(f"Failed to download {url} HTTP {response.status_code}")
+                return False
         except Exception as e:
             print(f"Failed to download {url}: {e}")
+            return False
 
     def get_modified_html(self):
         return self.modified_html

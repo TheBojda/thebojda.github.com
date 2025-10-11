@@ -1,0 +1,292 @@
+
+/* medium-export.css
+   A clean, Medium-esque stylesheet for HTML files exported from Medium.
+   Drop this file next to your HTML and include it with:
+     <link rel="stylesheet" href="medium-export.css">
+   Tip: If your export contains inline <style>, include THIS file after it,
+   or remove the inline styles to avoid conflicts.
+*/
+
+/* ---------- CSS Variables ---------- */
+:root{
+  --bg: #ffffff;
+  --text: #1a1a1a;
+  --muted: #6b6b6b;
+  --link: #0f7cff;
+  --link-visited: #6f42c1;
+  --border: #e6e6e6;
+  --blockquote-bar: #e0e0e0;
+  --code-bg: #f6f8fa;
+  --code-text: #0b1520;
+  --caption: #777;
+  --hr: #eaeaea;
+  --max-w: 740px; /* reading width */
+  --sidepad: 24px;
+  --radius: 12px;
+  --shadow: 0 2px 24px rgba(0,0,0,.06);
+  --lead-size: clamp(34px, 6vw, 54px);
+  --h2-size: clamp(26px, 4.2vw, 34px);
+  --h3-size: clamp(22px, 3.2vw, 28px);
+  --body-size: clamp(18px, 2.4vw, 20px);
+  --small-size: 14px;
+  --line: 1.7;
+}
+
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg: #0f1115;
+    --text: #e9eef4;
+    --muted: #a8b3c7;
+    --link: #82aaff;
+    --link-visited: #d3a6ff;
+    --border: #202635;
+    --blockquote-bar: #2a3347;
+    --code-bg: #0b1220;
+    --code-text: #e9eef4;
+    --caption: #9aa8bd;
+    --hr: #1c2433;
+    --shadow: 0 2px 24px rgba(0,0,0,.35);
+  }
+}
+
+/* ---------- Base ---------- */
+*{ box-sizing: border-box; }
+html, body{ margin:0; padding:0; }
+html{ scroll-behavior:smooth; }
+body{
+  background: var(--bg);
+  color: var(--text);
+  font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  font-size: var(--body-size);
+  line-height: var(--line);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+article{
+  max-width: var(--max-w);
+  margin: 8vh auto 12vh;
+  padding: 0 var(--sidepad);
+}
+
+.section-divider {
+        display: none;
+      }
+
+/* ---------- Sections & Paragraphs ---------- */
+
+
+.section .section-content,
+.section .section-inner,
+section[data-field="body"]{
+  max-width: var(--max-w);
+  margin: 0 auto;
+}
+
+p{
+  margin: 0 0 20px 0;
+}
+
+p.lead, .graf--leading{
+  font-size: calc(var(--body-size) * 1.08);
+}
+
+em, i{ font-style: italic; }
+strong, b{ font-weight: 700; }
+
+/* ---------- Headings ---------- */
+h1,h2,h3,h4,h5,h6{
+  color: var(--text);
+  margin: 28px 0 12px;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+h2, .graf--h2{ font-size: var(--h2-size); }
+h3, .graf--h3{ font-size: var(--h3-size); }
+h4, .graf--h4{ font-size: 18px; text-transform: none; letter-spacing: 0; color: var(--muted); }
+
+/* ---------- Links ---------- */
+a{
+  color: var(--link);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+a:visited{ color: var(--link-visited); }
+a:hover{ text-decoration-thickness: 2px; }
+
+/* ---------- Images & Figures ---------- */
+img, video{
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius);
+  display: block;
+  margin: 20px auto;
+  box-shadow: var(--shadow);
+}
+
+figure{
+  margin: 26px auto;
+  text-align: center;
+}
+
+figcaption, .imageCaption{
+  color: var(--caption);
+  font-size: 0.92em;
+  margin-top: 8px;
+}
+
+/* Fix for Medium's aspect-ratio placeholders */
+.aspectRatioPlaceholder,
+.aspectRatioPlaceholder-fill{
+  max-width: 100% !important;
+  max-height: none !important;
+  padding: 0 !important;
+}
+
+/* ---------- Blockquotes ---------- */
+blockquote{
+  margin: 24px 0;
+  padding: 0 18px;
+  border-left: 4px solid var(--blockquote-bar);
+  color: var(--muted);
+}
+blockquote strong{ color: var(--text); }
+
+/* ---------- Lists ---------- */
+ul, ol{ padding-left: 1.25em; margin: 0 0 20px 0; }
+li{ margin: 6px 0; }
+
+/* ---------- Code ---------- */
+code, kbd, samp{
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  background: var(--code-bg);
+  color: var(--code-text);
+  border-radius: 6px;
+  padding: 0.15em 0.35em;
+}
+
+pre{
+  background: var(--code-bg);
+  color: var(--code-text);
+  padding: 16px;
+  border-radius: 12px;
+  overflow: auto;
+  box-shadow: var(--shadow);
+  font-size: 0.95em;
+}
+pre code{ background: transparent; padding: 0; }
+
+/* ---------- Horizontal Rule ---------- */
+hr, .section-divider hr{
+  border: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--hr), transparent);
+  margin: 36px 0;
+}
+
+/* ---------- Tables ---------- */
+table{
+  width: 100%;
+  border-collapse: collapse;
+  margin: 24px 0;
+  font-size: 0.98em;
+}
+th, td{
+  border: 1px solid var(--border);
+  padding: 10px 12px;
+}
+th{
+  background: color-mix(in oklab, var(--border), transparent 60%);
+  text-align: left;
+}
+
+/* ---------- "Mixtape" embed cards ---------- */
+.graf--mixtapeEmbed {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  text-decoration: none !important;
+  color: var(--text);
+  background: color-mix(in oklab, var(--link) 4%, var(--bg));
+  box-shadow: var(--shadow);
+  margin: 18px 0;
+  width: 640px;
+}
+
+.graf--mixtapeEmbed .markup--mixtapeEmbed-anchor {
+  flex: 1;
+  text-decoration: none;
+  color: inherit;
+  line-height: 1.4;
+}
+
+.graf--mixtapeEmbed .markup--mixtapeEmbed-anchor strong {
+  display: block;
+  font-size: 1.05em;
+  margin-bottom: 4px;
+}
+
+.graf--mixtapeEmbed .markup--mixtapeEmbed-anchor em {
+  display: block;
+  color: var(--muted);
+  font-style: normal;
+  font-size: 0.95em;
+  margin-bottom: 4px;
+}
+
+.graf--mixtapeEmbed .js-mixtapeImage {
+  flex-shrink: 0;
+  width: 64px;
+  height: 64px;
+  border-radius: 10px;
+  background-size: cover;
+  background-position: center;
+  box-shadow: var(--shadow);
+}
+
+
+/* ---------- Footers ---------- */
+footer{
+  max-width: var(--max-w);
+  margin: 56px auto 32px;
+  padding: 0 var(--sidepad);
+  color: var(--muted);
+  font-size: 0.92em;
+  border-top: 1px solid var(--border);
+  padding-top: 20px;
+}
+footer a{ color: var(--muted); text-decoration: underline; text-underline-offset: 2px; }
+
+/* ---------- Helpers ---------- */
+.small, small{ font-size: var(--small-size); color: var(--muted); }
+.center{ text-align:center; }
+.right{ text-align:right; }
+.nowrap{ white-space: nowrap; }
+
+/* ---------- Print tweaks ---------- */
+@media print{
+  body{ background: #fff; color: #000; }
+  a{ color: inherit; text-decoration: none; }
+  img, video{ box-shadow: none; }
+  .graf--mixtapeEmbed, .mixtapeEmbed{ box-shadow: none; }
+}
+
+/* ---------- Optional: subtle drop cap on first paragraph ---------- */
+.section--first .graf--p:first-of-type::first-letter,
+section[data-field="body"] p:first-of-type::first-letter{
+  float: left;
+  font-size: 3.1em;
+  line-height: 0.9;
+  padding-right: 8px;
+  padding-top: 6px;
+  font-weight: 800;
+  color: color-mix(in oklab, var(--text), var(--muted));
+}
+
+/* ---------- Kill legacy inline styles from export (safely) ---------- */
+article style{ display: none !important; }
