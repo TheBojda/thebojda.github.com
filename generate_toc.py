@@ -88,7 +88,7 @@ class ImageDownloader(HTMLParser):
                 print(f"Failed to download {url} HTTP {response.status_code}")
                 return False
         except Exception as e:
-            print(f"Failed to download {url}: {e}")
+            print(f"Failed to download {url} {e}")
             return False
 
     def get_modified_html(self):

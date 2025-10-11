@@ -64,17 +64,24 @@ body{
 }
 
 article{
-  max-width: var(--max-w);
   margin: 8vh auto 12vh;
   padding: 0 var(--sidepad);
 }
 
-.section-divider {
-        display: none;
-      }
+.section--body.section--first > :first-child {
+  display: none;
+}
 
 /* ---------- Sections & Paragraphs ---------- */
 
+section {
+   width: var(--max-w);
+}
+
+section img {
+  max-width: var(--max-w);
+  width: var(--max-w);
+}
 
 .section .section-content,
 .section .section-inner,
@@ -105,6 +112,10 @@ h1,h2,h3,h4,h5,h6{
 h2, .graf--h2{ font-size: var(--h2-size); }
 h3, .graf--h3{ font-size: var(--h3-size); }
 h4, .graf--h4{ font-size: 18px; text-transform: none; letter-spacing: 0; color: var(--muted); }
+
+.graf--title {
+    font-size: 42px;
+}
 
 /* ---------- Links ---------- */
 a{
@@ -215,7 +226,7 @@ th{
   background: color-mix(in oklab, var(--link) 4%, var(--bg));
   box-shadow: var(--shadow);
   margin: 18px 0;
-  width: 640px;
+  width: var(--max-w);
 }
 
 .graf--mixtapeEmbed .markup--mixtapeEmbed-anchor {
