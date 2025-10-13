@@ -2,6 +2,7 @@ import os
 from html.parser import HTMLParser
 import requests
 import time
+from urllib.parse import urlparse
 
 class TitleExtractor(HTMLParser):
     inHeading = False
@@ -69,10 +70,13 @@ class ImageDownloader(HTMLParser):
             print(f"Image already exists: {path}, skipping download.")
             return True
         try:
-            response = requests.get(url, stream=True, timeout=10, allow_redirects=False)
+            response = requests.get(url, stream=True, timeout=10, allow_redirects=True)
             if response.status_code == 301:
                 redirect_url = response.headers.get('Location')
                 if redirect_url:
+                    if redirect_url.startswith('/'):
+                        original_host = urlparse(url).netloc
+                        redirect_url = f"https://{original_host}{redirect_url}"
                     print(f"Redirecting from {url} to {redirect_url}")
                     return self.download_image(redirect_url, path)
                 else:
@@ -83,6 +87,7 @@ class ImageDownloader(HTMLParser):
                     for chunk in response.iter_content(1024):
                         file.write(chunk)
                 print(f"Downloaded successfully: {path}")
+                time.sleep(5)  # Wait for 5 seconds after successful download
                 return True
             else:
                 print(f"Failed to download {url} HTTP {response.status_code}")
